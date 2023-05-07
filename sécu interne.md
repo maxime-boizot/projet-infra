@@ -101,4 +101,42 @@ The key's randomart image is:
 
 ## fail2ban : 
 
-ensuite on va installer fail2ban pour proteger le ssh du brut force
+ensuite on va installer fail2ban pour proteger le ssh du brut force il est aussi possible de le mettre sur d'autre service =ais ici ce sera pour le ssh 
+
+```
+sudo apt install fail2ban
+```
+
+on install avec cette command 
+
+on demarre le service avec 
+
+```
+systemctl start fail2ban
+systemctl status fail2ban
+```
+pour verifier si le service tourne bien
+
+ensuite on va ce rendre dans la conf de fail2ban pour configurer la jail avec sshd dans notre cas
+
+```
+sudo nano /etc/fail2ban/jail.local
+```
+et nous remplisson le fichier comme ceci 
+
+```
+[sshd]
+enabled = true
+port = ssh
+bantime = 1h
+maxretry = 5
+```
+
+une fois ça fait on redemmarre le service 
+
+```
+systemctl restart fail2ban
+```
+
+et plus qu'as test en ce fesant ban (astuce: pour verifier que tt marche baisser le temps de ban)
+
