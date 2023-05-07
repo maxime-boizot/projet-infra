@@ -98,12 +98,117 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
+et ensuite on tape la commande suivante
+
+```
+ssh-copy-id utilisateur@ipduserveur
+```
+
+pour mettre la clef publique de ssh sur le server et ensuite on restart le service
+
+
+```
+systemctl restart sshd
+```
 
 ## fail2ban : 
 
+<<<<<<< HEAD
 ensuite on va installer fail2ban pour proteger le ssh du brut force
 
-<br>
+ensuite on va installer fail2ban pour proteger le ssh du brut force il est aussi possible de le mettre sur d'autre service mais ici ce sera pour le ssh 
+
+```
+sudo apt install fail2ban
+```
+
+on install avec cette command 
+
+on demarre le service avec 
+
+```
+systemctl start fail2ban
+systemctl status fail2ban
+```
+pour verifier si le service tourne bien
+
+ensuite on va ce rendre dans la conf de fail2ban pour configurer la jail avec sshd dans notre cas
+
+```
+sudo nano /etc/fail2ban/jail.d$ cat defaults-debian.conf
+```
+
+et nous remplisson le fichier comme ceci 
+
+```
+[sshd]
+enabled = true
+maxretry = 3
+findtime = 120
+bantime = 1200
+```
+
+une fois ça fait on redemmarre le service 
+
+```
+systemctl restart fail2ban
+```
+
+et plus qu'as test en ce fesant ban (astuce: pour verifier que tt marche baisser le temps de ban)
+
+## firewalld
+
+on install firewalld qui ne l'est pas de base sur debian 
+
+```
+sudo dnf install firewalld
+```
+
+```
+systemctl start firewalld
+```
+
+pour demarrer le firewall 
+
+et ensuite on configure comme on le souhaite dans notre cas on va ouvrir les port pour nos service le 80 et le 443 en tcp permanent 
+
+```
+sudo firewall-cmd --add-port=80/tcp --permanent
+sudo firewall-cmd --add-port=443/tcp --permanent
+```
+
+on reload le firewall 
+
+```
+sudo firawall-cmd --reload
+```
+
+```
+sudo firewall-cmd --list-all
+```
+
+pour list les règle inscrite
+
+```
+max@KymonoVps:~$ sudo firewall-cmd --list-all
+[sudo] password for max: 
+public (active)
+  target: default
+  icmp-block-inversion: no
+  interfaces: ens3
+  sources: 
+  services: dhcpv6-client ssh
+  ports: 80/tcp 443/tcp
+  protocols: 
+  forward: no
+  masquerade: no
+  forward-ports: 
+  source-ports: 
+  icmp-blocks: 
+  rich rules:
+```
+
+# sécurisation web de la machine
 
 ## WAF (Web Application FireWall) :
 
