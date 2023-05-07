@@ -1,4 +1,4 @@
-# sécurisation interne a la machine:
+# sécurisation interne de la machine:
 
 ## le ssh :
 
